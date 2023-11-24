@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class App2 {
     public static void main(String[] args) throws InterruptedException {
-        SparkConf sparkConf=new SparkConf().setAppName("WordCount Server").setMaster("localhost(*)");
+        SparkConf sparkConf=new SparkConf().setAppName("WordCount Server").setMaster("local[*]");
         JavaStreamingContext streamingContext=new JavaStreamingContext(sparkConf, Durations.seconds(8));
         JavaReceiverInputDStream<String> inputDStream=streamingContext.socketTextStream("localhost",8080);
         JavaDStream<String> dStream=inputDStream.flatMap(line-> Arrays.asList(line.split(" ")).iterator());

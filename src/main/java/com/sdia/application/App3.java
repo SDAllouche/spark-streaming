@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class App3 {
     public static void main(String[] args) throws InterruptedException {
-        SparkConf sparkConf=new SparkConf().setAppName("WordCount HDFS").setMaster("localhost(*)");
+        SparkConf sparkConf=new SparkConf().setAppName("WordCount HDFS").setMaster("local[*]");
         JavaStreamingContext streamingContext=new JavaStreamingContext(sparkConf, Durations.seconds(8));
         JavaDStream<String> inputDStream=streamingContext.textFileStream("hdfs://localhost:9000/repository");
         JavaDStream<String> dStream=inputDStream.flatMap(line-> Arrays.asList(line.split(" ")).iterator());
