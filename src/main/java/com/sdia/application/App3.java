@@ -12,11 +12,11 @@ import java.util.Arrays;
 
 public class App3 {
     public static void main(String[] args) throws InterruptedException {
-        SparkConf sparkConf=new SparkConf().setAppName("WordCount Server").setMaster("localhost(*)");
+        SparkConf sparkConf=new SparkConf().setAppName("WordCount HDFS").setMaster("localhost(*)");
         JavaStreamingContext streamingContext=new JavaStreamingContext(sparkConf, Durations.seconds(8));
-        JavaReceiverInputDStream<String> inputDStream=streamingContext.socketTextStream("localhost",8080);
+        JavaDStream<String> inputDStream=streamingContext.textFileStream("hdfs://localhost:9000/repository");
         JavaDStream<String> dStream=inputDStream.flatMap(line-> Arrays.asList(line.split(" ")).iterator());
-        JavaPairDStream<String,Integer> pairDStream1=dStream.mapToPair(a->new Tuple2<>(a,1));
+        JavaPairDStream<String,Integer> pairDStream1=dStream.mapToPair(m->new Tuple2<>(m,1));
         JavaPairDStream pairDStream2=pairDStream1.reduceByKey((a,b)->a+b);
         pairDStream2.print();
         streamingContext.start();
