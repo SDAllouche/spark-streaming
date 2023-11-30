@@ -13,7 +13,7 @@ public class App3 {
     public static void main(String[] args) throws InterruptedException {
         SparkConf sparkConf=new SparkConf().setAppName("WordCount HDFS").setMaster("local[*]");
         JavaStreamingContext streamingContext=new JavaStreamingContext(sparkConf, Durations.seconds(8));
-        JavaDStream<String> inputDStream=streamingContext.textFileStream("hdfs://localhost:9000/repository");
+        JavaDStream<String> inputDStream=streamingContext.textFileStream("hdfs://localhost:9000/repo");
         JavaDStream<String> dStream=inputDStream.flatMap(line-> Arrays.asList(line.split(" ")).iterator());
         JavaPairDStream<String,Integer> pairDStream1=dStream.mapToPair(m->new Tuple2<>(m,1));
         JavaPairDStream pairDStream2=pairDStream1.reduceByKey((a,b)->a+b);

@@ -16,33 +16,31 @@ public class IncidentsManagement {
         SparkSession ss=SparkSession.builder().appName("Incidents Management").master("local[*]").getOrCreate();
 
         StructType schema=new StructType(new StructField[]{
-                new StructField("id", DataTypes.LongType,false, Metadata.empty()),
+                new StructField("id", DataTypes.StringType,false, Metadata.empty()),
                 new StructField("titre", DataTypes.StringType,false, Metadata.empty()),
                 new StructField("description", DataTypes.StringType,false, Metadata.empty()),
                 new StructField("service", DataTypes.StringType,false, Metadata.empty()),
-                new StructField("date", DataTypes.DateType,false, Metadata.empty()),
+                new StructField("date", DataTypes.StringType,false, Metadata.empty()),
         });
 
-        Dataset<Row> df=ss.read().option("header",true).schema(schema).csv("inputs");
+        Dataset<Row> df=ss.readStream().option("header",true).schema(schema).csv("inputs");
         df = df.withColumn("date", to_date(col("date"), "yyyy/MM/dd"));
-        df.show();
 
         //Show incidents by service
-        Dataset<Row> incidentByService = df.groupBy("service").agg(count("*").alias("incidentByService"));
-
-        StreamingQuery query=incidentByService.writeStream().outputMode("complete").format("console").start();
-        query.awaitTermination();
+        StreamingQuery incidentByService=df.groupBy("service")
+                .agg(count("*").alias("incidentByService"))
+                .writeStream().outputMode("complete").format("console").start();
+        incidentByService.awaitTermination();
 
 
         //show 2 years that have the most incidents
-        /*Dataset<Row> df1 = df.withColumn("year", year(col("date")));
-        df1.show();
+        Dataset<Row> df1 = df.withColumn("year", year(col("date")));
 
-        Dataset<Row> incidentByYear = df1.groupBy("year")
+        StreamingQuery incidentByYear = df1.groupBy("year")
                 .agg(count("*").alias("incidentByYear"))
                 .orderBy(desc("incidentByYear"))
-                .limit(2);
-
-        incidentByYear.show();*/
+                .limit(2)
+                .writeStream().outputMode("complete").format("console").start();
+        incidentByYear.awaitTermination();
     }
 }
