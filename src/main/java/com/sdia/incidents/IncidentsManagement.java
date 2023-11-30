@@ -3,12 +3,16 @@ package com.sdia.incidents;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.streaming.StreamingQuery;
+import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.types.*;
+
+import java.util.concurrent.TimeoutException;
 
 import static org.apache.spark.sql.functions.*;
 
 public class IncidentsManagement {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws StreamingQueryException, TimeoutException {
         SparkSession ss=SparkSession.builder().appName("Incidents Management").master("local[*]").getOrCreate();
 
         StructType schema=new StructType(new StructField[]{
@@ -25,10 +29,13 @@ public class IncidentsManagement {
 
         //Show incidents by service
         Dataset<Row> incidentByService = df.groupBy("service").agg(count("*").alias("incidentByService"));
-        incidentByService.show();
+
+        StreamingQuery query=incidentByService.writeStream().outputMode("complete").format("console").start();
+        query.awaitTermination();
+
 
         //show 2 years that have the most incidents
-        Dataset<Row> df1 = df.withColumn("year", year(col("date")));
+        /*Dataset<Row> df1 = df.withColumn("year", year(col("date")));
         df1.show();
 
         Dataset<Row> incidentByYear = df1.groupBy("year")
@@ -36,6 +43,6 @@ public class IncidentsManagement {
                 .orderBy(desc("incidentByYear"))
                 .limit(2);
 
-        incidentByYear.show();
+        incidentByYear.show();*/
     }
 }
