@@ -47,16 +47,20 @@ Developing a Spark application for the hospital that receives hospital incidents
             <th>Batch 0</th>
             <th>Batch 1</th>
         </tr>
-        <tr>
-            <th>Batch 2</th>
-            <th>Batch 3</th>
-        </tr>
     </thead>
     <tbody>
         <tr>
             <td><img src="Screenshots/image1.png""></td>
             <td><img src="Screenshots/image2.png""></td>
         </tr>
+    </tbody>
+    <thead>
+        <tr>
+            <th>Batch 2</th>
+            <th>Batch 3</th>
+        </tr>
+    </thead>
+    <tbody>
         <tr>
             <td><img src="Screenshots/image3.png""></td>
             <td><img src="Screenshots/image4.png""></td>
@@ -73,6 +77,14 @@ Developing a Spark application for the hospital that receives hospital incidents
             <th>Batch 0</th>
             <th>Batch 1</th>
         </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src="Screenshots/image5.png""></td>
+            <td><img src="Screenshots/image6.png""></td>
+        </tr>
+    </tbody>
+    <thead>
         <tr>
             <th>Batch 2</th>
             <th>Batch 3</th>
@@ -80,16 +92,11 @@ Developing a Spark application for the hospital that receives hospital incidents
     </thead>
     <tbody>
         <tr>
-            <td><img src="Screenshots/image5.png""></td>
-            <td><img src="Screenshots/image6.png""></td>
-        </tr>
-        <tr>
             <td><img src="Screenshots/image7.png""></td>
             <td><img src="Screenshots/image8.png""></td>
         </tr>
     </tbody>
 </table>
-<br><br>
 <br><br>
 
 ## License
