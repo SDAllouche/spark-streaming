@@ -9,18 +9,20 @@ Spark not only outperforms MapReduce, but also is compatible with the Hadoop eco
 - Interactive analysis can be used to query the Hive warehouse.
 - Stream processing can be used for real-time businesses analysis (such as page-click streams), recommendation systems, and public opinion analysis.<br>
 
-## Spark SQL
-Spark SQL allows developers to directly process RDDs and query external data stored in Hive and HBase. An important feature of Spark SQL is that it can process relational tables and RDDs in a unified manner so that developers can easily use SQL commands to perform external queries and more complex data analysis. Spark SQL uses a similar method to relational databases to process SQL statements. SparkSQL parses SQL statements to form a tree, and then uses rules to bind and optimize the tree.<br>
-- Lexical and syntax parsing: Parses the lexical and syntax of the read SQL statements to identify keywords (such as SELECT, FROM, and WHERE), expressions, projections, and data sources, and then determines whether the SQL statement is standard and forms a logical plan.
-- Bind: Spark SQL binds a SQL statement to a database's data dictionary (column, table, or view). If the related projection and data source exist, the statement can be executed.
-- Optimize: Spark SQL provides several execution plans and returns the data sets obtained from the database. Execute: Spark SQL executes the optimal execution plan obtained in the previous step and returns the datasets obtained from the database.
+## Spark Streaming
+Spark Streaming is a stream processing system that performs high-throughput and faulttolerant processing on real-time data streams. It can perform complex operations such as map, reduce, and join on multiple data sources (such as Kafka, Flume, Twitter, Zero, and TCP sockets) and save the results to external file systems, databases, or real-time dashboards.<br>
+The core idea of Spark Streaming is to split stream computing into a series of short batch jobs. The batch processing engine is Spark Core. That is, the input data of Spark Streaming is divided into segments based on a specified time slice (for example, 1 second), each segment is converted into RDDs in Spark, then the DStream conversion in Spark Streaming is transformed to the RDD conversion in Spark. As a result, the intermediate results of RDD conversion are saved in the memory.<br>
+If real-time computing, a strong transaction mechanism, and dynamic parallelism adjustment are not required, Spark Streaming should be considered. Located in the Spark ecological technology stack, Spark Streaming can seamlessly integrate with Spark Core and Spark SQL. That is, delay batch processing, interactive query, and other operations can be performed immediately and seamlessly on immediate data that is processed in real time. This feature significantly enhances the advantages and functions of Spark Streaming.
+
+## Spark Structured Streaming
+Spark Structured Streaming is a streaming data processing engine built on Spark SQL. You can write streaming computing processes just like you would with static RDD data. When streaming data is continuously generated, Spark SQL processes the data incrementally and continuously and updates the results to the result set. The core of Structured Streaming is to regard streaming data as a database table where data is 
+continuously increasing. Such a data processing model is similar to data block processing. It can apply some query operations of the static database table to streaming data computing. Spark executes standard SQL query statements to obtain data from an unbounded table.
 
 ## Objective
-1. We want to develop a Spark application for an industrial company that processes incidents for each department. Incidents are stored in a csv file.
-2. A hospital wants to process this data using a Spark application in a parallel and distributed manner. The hospital has data stored in a relational database and csv files. The objective is to process this data using Spark SQL through the DataFrame and Dataset APIs to extract useful information in order to make decisions.
+Developing a Spark application for the hospital that receives hospital incidents in streaming with Structured Streaming. Incidents are received streaming in csv files.
 
 ## Application
-1. Incidents Management Captures
+1. Incidents Management Data
 <table >
     <thead>
         <tr>
@@ -30,80 +32,65 @@ Spark SQL allows developers to directly process RDDs and query external data sto
     </thead>
     <tbody>
         <tr>
-            <td><img src="Screenshots/image8.png""></td>
-            <td><img src="Screenshots/image13.png""></td>
-        </tr>
-    </tbody>
-</table><br>
-<table >
-    <thead>
-        <tr>
-            <th>Number of Incidents per Service</th>
-            <th>Two Years With The Most Incidents</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><img src="Screenshots/image14.png""></td>
-            <td><img src="Screenshots/image15.png""></td>
+            <td><img src="Screenshots/image9.png""></td>
+            <td><img src="Screenshots/image10.png""></td>
         </tr>
     </tbody>
 </table>
 <br><br>
 
-2. Hospital Management Captures
+2. Number of Incidents per Service
 
 <table >
     <thead>
         <tr>
-            <th>Create DB Tables</th>
-            <th>Use Mockaroo To Generate Random Data</th>
+            <th>Batch 0</th>
+            <th>Batch 1</th>
+        </tr>
+        <tr>
+            <th>Batch 2</th>
+            <th>Batch 3</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><img src="Screenshots/image9.png""></td>
-            <td><img src="Screenshots/image8.png""></td>
-        </tr>
-    </tbody>
-</table><br>
-<table >
-    <thead>
-        <tr>
-            <th>Doctors Table</th>
-            <th>Patients Table</th>
-            <th>Consultations Table</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><img src="Screenshots/image11.png""></td>
-            <td><img src="Screenshots/image12.png""></td>
-            <td><img src="Screenshots/image10.png""></td>
-        </tr>
         <tr>
             <td><img src="Screenshots/image1.png""></td>
             <td><img src="Screenshots/image2.png""></td>
+        </tr>
+        <tr>
             <td><img src="Screenshots/image3.png""></td>
+            <td><img src="Screenshots/image4.png""></td>
         </tr>
     </tbody>
-</table><br>
+</table>
+<br><br>
+
+3. Two Years With The Most Incidents
+
 <table >
     <thead>
         <tr>
-            <th>Number of Consultations Per Day</th>
-            <th>Number of Consultations Per Doctor</th>
-            <th>Number of Patients That attended Each Doctor</th>
+            <th>Batch 0</th>
+            <th>Batch 1</th>
+        </tr>
+        <tr>
+            <th>Batch 2</th>
+            <th>Batch 3</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td><img src="Screenshots/image5.png""></td>
             <td><img src="Screenshots/image6.png""></td>
+        </tr>
+        <tr>
             <td><img src="Screenshots/image7.png""></td>
+            <td><img src="Screenshots/image8.png""></td>
         </tr>
     </tbody>
-</table><br><br>
+</table>
+<br><br>
+<br><br>
 
 ## License
 [MIT License](LICENSE)
